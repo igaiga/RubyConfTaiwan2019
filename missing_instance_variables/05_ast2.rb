@@ -6,11 +6,11 @@ end
 
 def tracer
   TracePoint.trace(:line) do |tp|
-    # ソース取得
+    # Get source code
     line = File.open(tp.path, "r"){|f| f.readlines[tp.lineno - 1] }
-    # AST取得
+    # Get AST
     node = RubyVM::AbstractSyntaxTree.parse(line).children.last
-    # インスタンス変数への代入かを調べる
+    # Check the AST is instance variable assignment
     next unless node.type == :IASGN
     puts "[TP:#{tp.event}] #{tp.path}:#{tp.lineno} #{tp.method_id} #{tp.defined_class}"
   end

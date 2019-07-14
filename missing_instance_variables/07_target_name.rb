@@ -6,16 +6,16 @@ end
 
 def tracer(target_class_name, target_instance_variable_name)
   TracePoint.trace(:line) do |tp|
-    # ソース取得
+    # Get source code
     line = File.open(tp.path, "r"){|f| f.readlines[tp.lineno - 1] }
-    # AST取得
+    # Get AST
     node = RubyVM::AbstractSyntaxTree.parse(line).children.last
-    # インスタンス変数への代入かを調べる
+    # Check AST is instance variable assignment
     next unless node.type == :IASGN
-    # クラス名を調べる
+    # Check class name
     target_class = Kernel.const_get(target_class_name)
     next unless tp.self.is_a?(target_class)
-    # インスタンス変数名を調べる
+    # Check instance variable name
     instance_variable_name = node.children.first
     next unless instance_variable_name == target_instance_variable_name.to_sym
     puts "[TP:#{tp.event}] #{tp.path}:#{tp.lineno} #{tp.method_id} #{tp.defined_class}"

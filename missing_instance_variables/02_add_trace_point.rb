@@ -1,6 +1,6 @@
 class User
   def hi
-    @hi = "hi(｡･ω･｡)ノ" # 3行目
+    @hi = "hi(｡･ω･｡)ノ" # line:3
   end
 end
 
@@ -11,7 +11,7 @@ def tracer
 end
 
 tracer
-p User.new.hi # 14行目
+p User.new.hi # line:14
 #=> [TP:line] test.rb:14
 #=> [TP:line] test.rb:3 hi User
 #=> "hi(｡･ω･｡)ノ"
