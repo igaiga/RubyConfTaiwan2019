@@ -10,13 +10,13 @@ def tracer(target_class_name, target_instance_variable_name)
     # Get source code
     begin
       line = File.open(tp.path, "r"){|f| f.readlines[tp.lineno - 1] }
-    rescue Errno::ENOENT => e
+    rescue Errno::ENOENT => _e
     end
     next unless line
     # Get AST
     begin
       node = RubyVM::AbstractSyntaxTree.parse(line).children.last
-    rescue Exception => e # too bad
+    rescue SyntaxError => _e
       next
     end
     # Check AST is instance variable assignment
